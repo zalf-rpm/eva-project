@@ -33,3 +33,6 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+scripts/simulations/db-connections.ini
+scripts/database/database_config.py
