@@ -50,7 +50,7 @@ wettreg = landcare
 [db.zalf-mysql]
 host = mysql
 user = gast
-pwd = gast
+pwd =       ; enter password
 
 [db.zalf-mysql.schema]
 landcare = landcare
@@ -70,7 +70,7 @@ eva2 = eva2
 [db.zalf-mysql.write]
 host = mysql
 user = eom
-pwd = eomw
+pwd =        ; enter password
 
 [db.zalf-mysql.write.schema]
 write.eom = eom
@@ -80,7 +80,7 @@ write.movedb = eom
 [db.landcare-server]
 host = 80.190.97.203
 user = gast
-pwd = gast
+pwd =            ; enter password
 
 [db.landcare-server.schema]
 landcare = landcare
@@ -93,18 +93,19 @@ eom = eom
 [db.landcare-server.write]
 host = 80.190.97.203
 user = eom
-pwd = eomw
+pwd =            ; enter password
 
 [db.landcare-server.write.schema]
 write.eom = eom
 
+; path to MONICA crop parameters DB
 [db.monica-sqlite]
-filename = /home/specka/promotion/dissertation/data/optimierung/database/monica-orig.sqlite
+filename = E:/Eigene Dateien prescher/development/GitHub/monica/sqlite-db/monica.sqlite
 
 ;[db.local]
 ;host = localhost
 ;user = gast
-;pwd = gast
+;pwd =          ; enter password
 
 ;[db.local.schema]
 ;eom = eom
@@ -113,7 +114,7 @@ filename = /home/specka/promotion/dissertation/data/optimierung/database/monica-
 ;[db.local.write]
 ;host = localhost
 ;user = gastw
-;pwd = gastw
+;pwd =          ; enter password
 
 ;[db.local.write.schema]
 ;write.eom = eom

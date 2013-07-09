@@ -4,12 +4,22 @@
 # adding the path of monica's python module to search path
 # that is defined by the environment variable PYTHONPATH
 import sys
+import os
 sys.path.append('..')
 sys.path.append('.')
 
+# specification of platform dependent path separators
+sep = "/"
+if (sys.platform.startswith('win')):
+    # if windows
+    sep = "\\"
+
+# path to monica binary
+sys.path.append(os.path.normpath("E:/Eigene Dateien prescher/development/GitHub/monica/monica-swig"))
+
 import monica
 import datetime
-import os
+
 import shutil
 from save_monica_results import *
 from add_simulation_to_sql_db import *
@@ -17,7 +27,8 @@ import getopt
 from eva2_config import *
 
 # TODO: wichtig den Pfad zu den EVA-Daten zu spezifizieren
-data_path = ""
+data_path = os.path.normpath("E:/Eigene Dateien prescher/eva_messdaten")
+simulation_output_dir = os.path.normpath("E:/Eigene Dateien prescher/monica_simulations/runs")
 
 def main():
     
@@ -85,7 +96,7 @@ def main():
         elif option in("-o", "--simulationpath"):
             simulationpath = arg
         elif option in("-t", "--copypath"):
-            copypath = arg
+            copypath = os.path.normpath(arg)
         elif option == "-v":
             verbose=True
         elif option == "-e":
@@ -114,16 +125,10 @@ def main():
                 simulation_config.addFfgAnlage(anl)
             
         if (classification == 1):
-            
-            if (anl==1):
-                simulation_config.setEndDate(2009,06,30,1)
-            elif(anl==2):
-                simulation_config.setEndDate(2010,06,30,1)
-            elif(anl==3):
-                simulation_config.setEndDate(2011,12,31,1)
-            elif(anl==4):
-                simulation_config.setEndDate(2011,12,31,1)
-                
+            if ( end_date != None):
+                end_date_s = end_date.split("-")
+                simulation_config.setEndDate(int(end_date_s[2]), int(end_date_s[1]), int(end_date_s[0]),1)            
+                           
         if (classification == 9):
             if (end_date == None):            
                 if (anl == 2 or anl == 3):
@@ -131,6 +136,7 @@ def main():
                 elif (anl == 5 or anl == 6):
                     simulation_config.setEndDate(2011,12,31,1)
             else:
+               
                 end_date_s = end_date.split("-")
                 simulation_config.setEndDate(int(end_date_s[2]), int(end_date_s[1]), int(end_date_s[0]),1)
     
@@ -171,11 +177,12 @@ def main():
         
     if (simulationpath != None):
         rootpath =simulationpath
-        directory = standort + "/" + versuch + "/" + "ff" + simulation_config.getFruchtFolge() + "/anlage-" + str(simulation_config.getVariante()) + "/" + time_dir + "/"
+        directory = os.path.normpath(standort + "/" + versuch + "/" + "ff" + simulation_config.getFruchtFolge() + "/" + "anlage-" + str(simulation_config.getVariante()) + "/" + time_dir + "/")
     else:
-        rootpath = "/home/specka/devel/git/monica/python/eva2/"+ standort + "/" + versuch + "/"+ "ff" + simulation_config.getFruchtFolge() + "/anlage-" + str(simulation_config.getVariante()) + "/results/"
-        directory = time_dir + "-profil-" + str(simulation_config.getProfil_number())
-    output_path = rootpath  + directory + "/"
+        rootpath = os.path.normpath(simulation_output_dir + "/" + standort + "/" + versuch + "/"+ "ff" + simulation_config.getFruchtFolge() + "/" + "anlage-" + str(simulation_config.getVariante()) + "/" + "results")
+        directory = os.path.normpath(time_dir + "-profil-" + str(simulation_config.getProfil_number()))
+    output_path = os.path.normpath(rootpath  + "/" + directory )
+    simulation_data_path = os.path.normpath(data_path + "/" + standort + "/" + versuch + "/" + "ff" + simulation_config.getFruchtFolge() + "/" + "anlage-" + str(simulation_config.getVariante()))
     
     print "Output path1: ", output_path
     simulation_config.setOutputPath(output_path)
@@ -185,20 +192,20 @@ def main():
         return monica.getEva2Env(simulation_config)
 
     if (analyse):
-        os.makedirs(output_path + "/quality_graphics")
+        os.makedirs(os.path.normpath(output_path + "/" + "quality_graphics"))
 
         # writing name of folder into a separate file that
         # is read by the r script that generates pictures
-        r_config_file = open("rscripts/dir_config.r", "w")
-        print >> r_config_file, "folder=\"" + directory + "\""
+        r_config_file = open("rscripts" + "/" + "dir_config.r", "w")
+        print >> r_config_file, "folder=\"" + directory.replace("\\","/") + "\""
         print >> r_config_file, "standort=" +  str(simulation_config.getLocation())
         print >> r_config_file, "profil=" +  str(simulation_config.getProfil_number())
         print >> r_config_file, "anlage=" +  str(simulation_config.getVariante())
         print >> r_config_file, "ff=\"" +  simulation_config.getFruchtFolge() + "\""
         print >> r_config_file, "classification=" + str(simulation_config.getClassification())
-        print >> r_config_file, "root_folder=\"" +  rootpath + "\""
+        print >> r_config_file, "root_folder=\"" +  rootpath.replace("\\","/") + "/\""
         print >> r_config_file, "standortname=\"" + standort + "\""
-        print >> r_config_file, "data_folder =\"" + standort + "\""
+        print >> r_config_file, "data_folder =\"" + simulation_data_path.replace("\\","/") + "\""
 
         r_config_file.close() 
 
@@ -232,14 +239,17 @@ def main():
         #os.system("R --slave --vanilla < monthly_analyse.r")
         os.chdir("..")
     
+    
     if (copypath!=None):
-        tmpdir = copypath
+        tmpdir = "\"" + copypath
         base = os.path.basename(output_path[0:-1]) 
-        print "Copy: ", base   
-        new_dir = tmpdir+ standort + "-klass" + str(classification) + "-" + "ff" + simulation_config.getFruchtFolge() + "-anlage-" + str(simulation_config.getVariante()) #+ "-" +base
+           
+        new_dir = os.path.normpath(copypath + "/" + standort + "-klass" + str(classification) + "-" + "ff" + simulation_config.getFruchtFolge() + "-anlage-" + str(simulation_config.getVariante())) #+ "-" +base
         if (os.path.isdir(new_dir)):
             shutil.rmtree(new_dir)
+        print "Moving directory " + output_path + " to destination" + new_dir
         shutil.copytree(output_path,new_dir ) #+ "-" +base)
+        print "Removing old directory: ", output_path
         shutil.rmtree(output_path)
     return output_path
     

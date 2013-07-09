@@ -65,12 +65,16 @@ def get_config(standort, fruchtfolge, anlage, klassifikation = 1):
         # grundversuch
         if (anlage == 1):
             start_date = "2005-01-01"
+            config.setEndDate(2009,06,30,1)  # simulation end date set to next year because of quantification of the groundwater recharge and N leaching
         elif(anlage == 2):
             start_date = "2006-01-01"
+            config.setEndDate(2010,06,30,1)
         elif(anlage == 3):
             start_date = "2009-01-01"
+            config.setEndDate(2011,12,31,1)
         elif(anlage == 4):
             start_date = "2010-01-01"
+            config.setEndDate(2011,12,31,1)
     
     elif (klassifikation == 9):
         # 50 % Gärrest oder 100% Gärrest
@@ -79,7 +83,9 @@ def get_config(standort, fruchtfolge, anlage, klassifikation = 1):
             
         elif (anlage == 4 or anlage == 5 or anlage == 6):
             start_date = "2010-01-01"
-            
+      
+    # check if cultivation of crop started earlier than expected
+    # look at the bewirtschaftungsdaten in DB to get first application date
     query_string = """SELECT Datum FROM 2_60_Bew_Daten B 
                     WHERE id_pg like \"""" + id_string + "1" + """%\"
                     AND Datum is not NULL

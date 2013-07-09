@@ -4,17 +4,8 @@
 import os
 import datetime
 
-
-from mpi4py import MPI
 import numpy
 
-
-comm = MPI.COMM_WORLD
-rank = comm.Get_rank()
-size = comm.Get_size()
-name = MPI.Get_processor_name()
-
-# Abfragen der Messgroessn aus der Datenbank
 
 
 ff_collection = ["03"]
@@ -34,13 +25,11 @@ enddate2 = " --enddate=\"31-12-2011\""
 
 save_to_database = 0
 
-
-#time_dir = datetime.datetime.today().strftime("%Y-%m-%d_%H-%M-%S")
-time_dir = "endbericht/gaerrest"
+time_dir = "full_runs/gaerrest/"
 
 for ff in ff_collection:
     
-    global_dir = "/home/specka/eva_2/devel/parametrisierung/fruchtfolgen/" + time_dir + "/ff" + ff + "/"
+    global_dir = "E:/Eigene Dateien prescher/monica_simulations/" + time_dir + "/ff" + ff
     dir = global_dir + "simulation/"
     
     
@@ -60,7 +49,7 @@ for ff in ff_collection:
 #    command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 2 --standort dornburg --location 16 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
 #    command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 3 --standort dornburg --location 16 --classification 9 --copypath \"" + dir + "\" " +  startdate1 + enddate1)    
 #    
-    command_list.append("python eva2_simulation.py -y -v --fruchtfolge " + ff + " --anlage 1 --standort ettlingen --location 17 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
+#    command_list.append("python eva2_simulation.py -y -v --fruchtfolge " + ff + " --anlage 1 --standort ettlingen --location 17 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
 #    command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 2 --standort ettlingen --location 17 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
 #    command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 3 --standort ettlingen --location 17 --classification 9 --copypath \"" + dir + "\" " +  startdate1 + enddate1)   
 #    
@@ -87,7 +76,7 @@ for ff in ff_collection:
     #command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 5 --standort dornburg --location 16 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
     #command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 6 --standort dornburg --location 16 --classification 9 --copypath \"" + dir + "\" " +  startdate1 + enddate1)    
     
-    command_list.append("python eva2_simulation.py -y -v --fruchtfolge " + ff + " --anlage 4 --standort ettlingen --location 17 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
+    #command_list.append("python eva2_simulation.py -y -v --fruchtfolge " + ff + " --anlage 4 --standort ettlingen --location 17 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
     #command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 5 --standort ettlingen --location 17 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
     #command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 6 --standort ettlingen --location 17 --classification 9 --copypath \"" + dir + "\" " +  startdate1 + enddate1)   
     
@@ -105,15 +94,11 @@ for ff in ff_collection:
 
 
     for index, command in enumerate(command_list):
-        print index, size, (index % size) == rank
-        if ((index % size) == rank):
-            if (save_to_database):
-                command += " -b "
-            print rank, command
+        if (save_to_database):
+            command += " -b "
             
-            os.system(command)
+        os.system(command)
     
     # Sammeln der Ergebnisse fuer bessere Auswertung
-    if (rank==0):
-        os.system("python order_results.py " + global_dir)
+    os.system("python order_results.py " + "\"" + global_dir + "\"")
 

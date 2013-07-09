@@ -1,8 +1,9 @@
-folder="2013-04-29_13-59-18-profil-52"
-standort=19
-profil=52
-anlage=2
-ff="04"
+folder="2013-07-08_15-46-06-profil-27"
+standort=11
+profil=27
+anlage=1
+ff="01"
 classification=1
-root_folder="/home/specka/devel/git/monica/python/eva2/gueterfelde/grundversuch/ff04/anlage-2/results/"
-standortname="gueterfelde"
+root_folder="E:/Eigene Dateien prescher/monica_simulations/runs/ascha/grundversuch/ff01/anlage-1/results/"
+standortname="ascha"
+data_folder ="E:/Eigene Dateien prescher/eva_messdaten/ascha/grundversuch/ff01/anlage-1"

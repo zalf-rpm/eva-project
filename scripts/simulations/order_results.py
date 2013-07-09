@@ -11,23 +11,24 @@ def main():
 
     # receive path to analyse from command line parameter
     if (len(sys.argv)>=2):
-        path = str(sys.argv[1])   
-    
+        path = os.path.normpath(str(sys.argv[1]))   
+    print "order_results.py"
+    print "path: ", path
     # create directory for image and stats file if they do not already exist
-    if (not os.path.isdir(path + "stats")):
-        os.makedirs(path + "stats")        
-    if (not os.path.isdir(path + "yield_pics")):
-        os.makedirs(path + "yield_pics")
-    if (not os.path.isdir(path + "soil_pics")):
-        os.makedirs(path + "soil_pics")
-    if (not os.path.isdir(path + "yearly_stats")):
-        os.makedirs(path + "yearly_stats")
-    if (not os.path.isdir(path + "crop_results")):
-        os.makedirs(path + "crop_results")
-    if (not os.path.isdir(path + "monthly_results")):
-        os.makedirs(path + "monthly_results")
-    if (not os.path.isdir(path + "soil_data")):
-        os.makedirs(path + "soil_data")
+    if (not os.path.isdir(path + "/stats")):
+        os.makedirs(path + "/stats")        
+    if (not os.path.isdir(path + "/yield_pics")):
+        os.makedirs(path + "/yield_pics")
+    if (not os.path.isdir(path + "/soil_pics")):
+        os.makedirs(path + "/soil_pics")
+    if (not os.path.isdir(path + "/yearly_stats")):
+        os.makedirs(path + "/yearly_stats")
+    if (not os.path.isdir(path + "/crop_results")):
+        os.makedirs(path + "/crop_results")
+    if (not os.path.isdir(path + "/monthly_results")):
+        os.makedirs(path + "/monthly_results")
+    if (not os.path.isdir(path + "/soil_data")):
+        os.makedirs(path + "/soil_data")
     if (not os.path.isdir(path + "/quality_images")):
         os.makedirs(path + "/quality_images")
     if (not os.path.isdir(path + "/quality_images/bbch")):
@@ -55,58 +56,61 @@ def main():
     if (not os.path.isdir(path + "/quality_images/n-uptake")):
         os.makedirs(path + "/quality_images/n-uptake")
         
-    simulation_path = path + "simulation/" 
+    simulation_path = os.path.normpath(path + "/simulation/")
     dir_list =  getDirInDirectory(simulation_path)
     
     for dir in dir_list:
         print "Analysing: " + dir
-        files = getFilesInDirectory(simulation_path +  dir)
+        files = getFilesInDirectory(os.path.normpath(simulation_path + "/" + dir))
+        print files
         qfiles = []
-        if (os.path.isdir(simulation_path + dir + "/quality_graphics")):
-            qfiles = getFilesInDirectory(simulation_path + dir + "/quality_graphics/" )
+        if (os.path.isdir(os.path.normpath(simulation_path +"/" +  dir + "/quality_graphics"))):
+            qfiles = getFilesInDirectory(os.path.normpath(simulation_path + "/" + dir + "/quality_graphics/") )
         
         for file in files:
             # searching for yield images
             regex_ertrag = re.compile("_ertrag_")
             result = regex_ertrag.search(file)
             if (result is not None):
-                shutil.copy(simulation_path +  dir + "/" + file, path + "yield_pics/" + file)
+                print "copy from:", os.path.normpath(simulation_path + "/" +  dir + "/" + file)
+                print "to: ", os.path.normpath(path + "/yield_pics/" + file)
+                shutil.copy(os.path.normpath(simulation_path + "/" +  dir + "/" + file), os.path.normpath(path + "/yield_pics/" + file))
                 
             # searching for soil images
             regex_soil = re.compile("_boden_")
             result = regex_soil.search(file)
             if (result is not None):
-                shutil.copy(simulation_path +  dir + "/" + file, path + "soil_pics/" + file)
+                shutil.copy(os.path.normpath(simulation_path + "/" + dir + "/" + file), os.path.normpath(path + "/soil_pics/" + file))
                 
             # searching for stat files
             regex_stats = re.compile("_statistics_")
             result = regex_stats.search(file)
             if (result is not None):
-                shutil.copy(simulation_path +  dir + "/" + file, path + "stats/" + file)   
+                shutil.copy(os.path.normpath(simulation_path + "/" + dir + "/" + file), os.path.normpath(path + "/stats/" + file))   
     
             # searching for yearly stat files
             regex_yearly_stats = re.compile("_yearly_(.)*\.txt")
             result = regex_yearly_stats.search(file)
             if (result is not None):
-                shutil.copy(simulation_path +  dir + "/" + file, path + "yearly_stats/" + file)   
+                shutil.copy(os.path.normpath(simulation_path + "/" + dir + "/" + file), os.path.normpath(path + "/yearly_stats/" + file))   
                 
             # searching for yearly stat files
             regex_crop_results = re.compile("_cropresults_")
             result = regex_crop_results.search(file)
             if (result is not None):
-                shutil.copy(simulation_path +  dir + "/" + file, path + "crop_results/" + file)   
+                shutil.copy(os.path.normpath(simulation_path + "/" + dir + "/" + file), os.path.normpath(path + "/crop_results/" + file))   
                 
             # searching for monthly stat files
             regex_month_results = re.compile("_monthlyresults_")
             result = regex_month_results.search(file)
             if (result is not None):
-                shutil.copy(simulation_path +  dir + "/" + file, path + "monthly_results/" + file)   
+                shutil.copy(os.path.normpath(simulation_path + "/" + dir + "/" + file), os.path.normpath(path + "/monthly_results/" + file))   
         
             # searching for soil data files
             regex_soildata_results = re.compile("soildata")
             result = regex_soildata_results.search(file)
             if (result is not None):
-                shutil.copy(simulation_path +  dir + "/" + file, path + "soil_data/" + file)   
+                shutil.copy(os.path.normpath(simulation_path + "/" + dir + "/" + file), os.path.normpath(path + "/soil_data/" + file))   
 
         qdir = "quality_graphics/"
         
@@ -115,97 +119,97 @@ def main():
             regex = re.compile("-bbch.png")
             result = regex.search(qfile)
             if (result is not None):
-                shutil.copy(simulation_path +  dir + "/" + qdir + qfile, path + "/quality_images/bbch/" + qfile)
+                shutil.copy(os.path.normpath(simulation_path + "/" + dir + "/" + qdir + "/" + qfile), os.path.normpath(path + "/quality_images/bbch/" + qfile))
                 
             # searching for yield images
             regex = re.compile("-defizite.png")
             result = regex.search(qfile)
             if (result is not None):
-                shutil.copy(simulation_path +  dir + "/" + qdir + qfile, path + "/quality_images/defizite/" + qfile)
+                shutil.copy(os.path.normpath(simulation_path + "/" + dir + "/" + qdir + "/" + qfile), os.path.normpath(path + "/quality_images/defizite/" + qfile))
                 
             # searching for yield images
             regex = re.compile("-ertrag.png")
             result = regex.search(qfile)
             if (result is not None):
-                shutil.copy(simulation_path +  dir + "/" + qdir + qfile, path + "/quality_images/ertrag/" + qfile)                
+                shutil.copy(os.path.normpath(simulation_path + "/" + dir + "/" + qdir + "/" + qfile), os.path.normpath(path + "/quality_images/ertrag/" + qfile))
 
             # searching for yield images
             regex = re.compile("-ob-biomasse.png")
             result = regex.search(qfile)
             if (result is not None):
-                shutil.copy(simulation_path +  dir + "/" + qdir + qfile, path + "/quality_images/ob-biomasse/" + qfile)  
+                shutil.copy(os.path.normpath(simulation_path + "/" + dir + "/" + qdir + "/" + qfile), os.path.normpath(path + "/quality_images/ob-biomasse/" + qfile))
 
             # searching for yield images
             regex = re.compile("-hoehe.png")
             result = regex.search(qfile)
             if (result is not None):
-                shutil.copy(simulation_path +  dir + "/" + qdir + qfile, path + "/quality_images/hoehe/" + qfile)  
+                shutil.copy(os.path.normpath(simulation_path + "/" + dir + "/" + qdir + "/" + qfile), os.path.normpath(path + "/quality_images/hoehe/" + qfile))
                 
             # searching for yield images
             regex = re.compile("-wasser0-30cm.png")
             result = regex.search(qfile)
             if (result is not None):
-                shutil.copy(simulation_path +  dir + "/" + qdir + qfile, path + "/quality_images/bodenwasser/30/" + qfile)      
+                shutil.copy(os.path.normpath(simulation_path + "/" + dir + "/" + qdir + "/" + qfile), os.path.normpath(path + "/quality_images/bodenwasser/30/" + qfile))
                 
             # searching for yield images
             regex = re.compile("-wasser30-60cm.png")
             result = regex.search(qfile)
             if (result is not None):
-                shutil.copy(simulation_path +  dir + "/" + qdir + qfile, path + "/quality_images/bodenwasser/60/" + qfile)
+                shutil.copy(os.path.normpath(simulation_path + "/" + dir + "/" + qdir + "/" + qfile), os.path.normpath(path + "/quality_images/bodenwasser/60/" + qfile))
                 
             # searching for yield images
             regex = re.compile("-wasser60-90cm.png")
             result = regex.search(qfile)
             if (result is not None):
-                shutil.copy(simulation_path +  dir + "/" + qdir + qfile, path + "/quality_images/bodenwasser/90/" + qfile)   
+                shutil.copy(os.path.normpath(simulation_path + "/" + dir + "/" + qdir + "/" + qfile), os.path.normpath(path + "/quality_images/bodenwasser/90/" + qfile))
 
             # searching for yield images
             regex = re.compile("-wasserhaushalt.png")
             result = regex.search(qfile)
             if (result is not None):
-                shutil.copy(simulation_path +  dir + "/" + qdir + qfile, path + "/quality_images/wasserhaushalt/" + qfile)  
+                shutil.copy(os.path.normpath(simulation_path + "/" + dir + "/" + qdir + "/" + qfile), os.path.normpath(path + "/quality_images/wasserhaushalt/" + qfile))
 
             # searching for yield images
             regex = re.compile("-nmin0-90cm.png")
             result = regex.search(qfile)
             if (result is not None):
-                shutil.copy(simulation_path +  dir + "/" + qdir + qfile, path + "/quality_images/nmin/" + qfile)       
+                shutil.copy(os.path.normpath(simulation_path + "/" + dir + "/" + qdir + "/" + qfile), os.path.normpath(path + "/quality_images/nmin/" + qfile))
                 
             # searching for yield images
             regex = re.compile("-nmin0-30cm.png")
             result = regex.search(qfile)
             if (result is not None):
-                shutil.copy(simulation_path +  dir + "/" + qdir + qfile, path + "/quality_images/nmin/" + qfile)
+                shutil.copy(os.path.normpath(simulation_path + "/" + dir + "/" + qdir + "/" + qfile), os.path.normpath(path + "/quality_images/nmin/" + qfile))
                 
             # searching for yield images
             regex = re.compile("-nmin30-60cm.png")
             result = regex.search(qfile)
             if (result is not None):
-                shutil.copy(simulation_path +  dir + "/" + qdir + qfile, path + "/quality_images/nmin/" + qfile)
+                shutil.copy(os.path.normpath(simulation_path + "/" + dir + "/" + qdir + "/" + qfile), os.path.normpath(path + "/quality_images/nmin/" + qfile))
                 
             # searching for yield images
             regex = re.compile("-nmin60-90cm.png")
             result = regex.search(qfile)
             if (result is not None):
-                shutil.copy(simulation_path +  dir + "/" + qdir + qfile, path + "/quality_images/nmin/" + qfile)
+                shutil.copy(os.path.normpath(simulation_path + "/" + dir + "/" + qdir + "/" + qfile), os.path.normpath(path + "/quality_images/nmin/" + qfile))
                 
             # searching for yield images
             regex = re.compile("-nmin90-120cm.png")
             result = regex.search(qfile)
             if (result is not None):
-                shutil.copy(simulation_path +  dir + "/" + qdir + qfile, path + "/quality_images/nmin/" + qfile)                                                        
+                shutil.copy(os.path.normpath(simulation_path + "/" + dir + "/" + qdir + "/" + qfile), os.path.normpath(path + "/quality_images/nmin/" + qfile))                                                       
                 
             # searching for yield images
             regex = re.compile("-n-concentration.png")
             result = regex.search(qfile)
             if (result is not None):
-                shutil.copy(simulation_path +  dir + "/" + qdir + qfile, path + "/quality_images/n-concentration/" + qfile)     
+                shutil.copy(os.path.normpath(simulation_path + "/" + dir + "/" + qdir + "/" + qfile), os.path.normpath(path + "/quality_images/n-concentration/" + qfile))
                 
             # searching for yield images
             regex = re.compile("-Nuptake.png")
             result = regex.search(qfile)
             if (result is not None):
-                shutil.copy(simulation_path +  dir + "/" + qdir + qfile, path + "/quality_images/n-uptake/" + qfile)                           
+                shutil.copy(os.path.normpath(simulation_path + "/" + dir + "/" + qdir + "/" + qfile), os.path.normpath(path + "/quality_images/n-uptake/" + qfile))  
 
 """ 
 Returns a list with all files that are located in the 
@@ -228,11 +232,11 @@ Returns a list with all directories that are located in the
 directory specified by 'path'
 """
 def getDirInDirectory(path):
-    directory_list = os.listdir(path)    
+    directory_list = os.listdir(os.path.normpath(path))    
     dirs = []
     
     for item in directory_list:
-        if os.path.isdir(path + '/' + item):
+        if os.path.isdir(os.path.normpath(path + '/' + item)):
             dirs.append(item)
     
     return (dirs)

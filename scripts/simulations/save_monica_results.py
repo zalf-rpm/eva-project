@@ -1,11 +1,11 @@
-
+import os
 import csv
 import monica
 
 
 def save_monica_results(result_object, output_path, standort, classification, ff, variante, profil_nr, location_nr):    
     
-    
+    print "Running save_monica_results.py"
     crop_file = standort + "_cropresults_class-" + str(classification) + "_ff" + ff + "-anlage-" + str(variante) + ".txt"
     monthly_file = standort + "_monthlyresults_class-" + str(classification) + "_ff" + ff + "-anlage-" + str(variante) + ".txt"
     
@@ -16,7 +16,7 @@ def save_monica_results(result_object, output_path, standort, classification, ff
     for id in crop_ids:
         print monica.resultIdInfo(id).shortName
         crop_header.append(monica.resultIdInfo(id).shortName)
-    csv_crop = csv.writer(open(output_path + crop_file, "wb"),delimiter=';')
+    csv_crop = csv.writer(open(os.path.normpath(output_path +"/" + crop_file), "wb"),delimiter=';')
     csv_crop.writerow(crop_header)
     
     
@@ -28,7 +28,7 @@ def save_monica_results(result_object, output_path, standort, classification, ff
     for id in monthly_ids:
         print monica.resultIdInfo(id).shortName
         month_header.append(monica.resultIdInfo(id).shortName + " [" + monica.resultIdInfo(id).unit + "]")
-    csv_month = csv.writer(open(output_path + monthly_file, "wb"),delimiter=';')
+    csv_month = csv.writer(open(os.path.normpath(output_path + "/" +  monthly_file), "wb"),delimiter=';')
     csv_month.writerow(month_header)
     
     

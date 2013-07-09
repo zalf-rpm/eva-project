@@ -9,9 +9,6 @@ index_of_equal_elements1<- function(a1,a2)
 
 
 
-
-
-
 ignore_last_mn_uptake_values_count = 0
 
 source("config.r")
@@ -40,8 +37,9 @@ hl = readLines(smout_file, 1)
 hl = strsplit(hl, '\t')
 colnames(smout) = hl[[1]]
 
-
 rmout = read.table(rmout_file, header=T, sep="\t", skip=2)
+
+print (soil_data_file)
 soildata = read.table(soil_data_file, header=T, sep=";")
 hl = readLines(rmout_file, 1)
 hl = strsplit(hl, '\t')
@@ -75,7 +73,6 @@ modell_dev_stage = smout$Stage
 
 modell_n_uptake = modell_yield * modell_yield_n
 modell_n_uptake_abm = modell_above_bm * modell_above_bm_n
-h 
 modell_moisture_0_30 = smout$"M0-30"*100.0
 modell_moisture_0_30 = smout$"M0-30"*100.0
 modell_moisture_30_60 = smout$"M30-60"*100.0
@@ -93,12 +90,12 @@ modell_moisture30 = ((rmout$Mois2+rmout$Mois3)/2) * 100.0
 modell_moisture60 = ((rmout$Mois5+rmout$Mois6)/2) * 100.0
 modell_moisture90 = ((rmout$Mois8+rmout$Mois9)/2) * 100.0
 
-
-modell_nmin_0_30 = smout$"N0-30" / 3.0
-modell_nmin_30_60 = smout$"N30-60" / 3.0
-modell_nmin_60_90 = smout$"N60-90" / 3.0
-modell_nmin_90_120 = smout$"N90-120" / 6.0
-modell_nmin_0_90 = smout$"N0-90" / 9.0
+# TODO: Überprüfen, ob hier in die richtige Einheit umgerechnet wird
+modell_nmin_0_30 = smout$"N0-30" /  1000.0
+modell_nmin_30_60 = smout$"N30-60" / 10000.0
+modell_nmin_60_90 = smout$"N60-90" /  10000.0
+modell_nmin_90_120 = smout$"N90-120" / 10000.0
+modell_nmin_0_90 = smout$"N0-90" / 10000.0
 
 
 modell_recharge = rmout$Recharge
@@ -114,7 +111,7 @@ pwp = pwp*100.0
 # get measured data
 if (calc_ertrag == 1) {
   print("Lese ertrag.tx")
-  yield_data = read.table(paste(data_folder, "ertrag.txt", sep=""), header=T, sep=";")
+  yield_data = read.table(paste(data_folder, "/ertrag.txt", sep=""), header=T, sep=";")
   yield_data$tm_prz
   yielddatum = strptime(yield_data$datumernte, format="%Y-%m-%d")
   crop=yield_data$id_pg
@@ -145,7 +142,7 @@ if (calc_ertrag == 1) {
   
   
   print("Lese zwischenernte.tx")
-  zwischenernte_data = read.table(paste(data_folder, "zwischenernte.txt", sep=""), header=T, sep=";")
+  zwischenernte_data = read.table(paste(data_folder, "/zwischenernte.txt", sep=""), header=T, sep=";")
   zwischenernte_datum = strptime(zwischenernte_data$datumernte, format="%Y-%m-%d")
   zwischenernte = ((zwischenernte_data$ertfm_jeefl_kg/zwischenernte_data$efl_m2)*100*100) * zwischenernte_data$tm_prz / 100.0
   
@@ -176,7 +173,7 @@ if (calc_ertrag == 1) {
 
 if (calc_bbch == 1) {
   print("BBCH")
-  bbch_data = read.table(paste(data_folder, "bbch.txt", sep=""), header=T, sep=";")
+  bbch_data = read.table(paste(data_folder, "/bbch.txt", sep=""), header=T, sep=";")
   bbch_datum = strptime(bbch_data$Datumereignis, format="%Y-%m-%d")
   bbch = bbch_data$BBCH_Ist
   
@@ -193,20 +190,20 @@ if (calc_bbch == 1) {
 
 if (calc_height == 1) {
   print("Lese hoehe.tx")
-  data_height = read.table(paste(data_folder, "hoehe.txt", sep=""), header=T, sep=";")
+  data_height = read.table(paste(data_folder, "/hoehe.txt", sep=""), header=T, sep=";")
   height_datum = strptime(data_height$datumereignis, format="%Y-%m-%d")
   height = data_height$messwert/100.0
 }
 
 print("Lese fertilizer.tx")
-fertilizer = read.table(paste(data_folder, "fertilizer.txt", sep=""), header=T, sep=";")
+fertilizer = read.table(paste(data_folder, "/fertilizer.txt", sep=""), header=T, sep=";")
 fertilizer_datum = strptime(fertilizer$Datum, format="%Y-%m-%d")
 fert_len = length(fertilizer$id_versuch)
 print (paste("Fertilizer: ", fert_len))
 
 if (calc_nconc == 1) {
   print("Lese yield_n.tx")
-  yield_n_data = read.table(paste(data_folder, "yield_n.txt", sep=""), header=T, sep=";")
+  yield_n_data = read.table(paste(data_folder, "/yield_n.txt", sep=""), header=T, sep=";")
   yield_n_datum = strptime(yield_n_data$datumernte, format="%Y-%m-%d")
   yield_n = yield_n_data$n_prz  / 100.0 # Umrechnung von [%] in [kg N / kg]
   
@@ -246,7 +243,7 @@ if (calc_nconc == 1) {
   
   
   print("Lese n_zeiternte.tx")
-  n_zeiternte_data = read.table(paste(data_folder, "n_zeiternte.txt", sep=""), header=T, sep=";")
+  n_zeiternte_data = read.table(paste(data_folder, "/n_zeiternte.txt", sep=""), header=T, sep=";")
   n_zeiternte_parzellen = n_zeiternte_data$n_prz  / 100.0 # Umrechnung von [%] in [kg N / kg]
   
   probe = n_zeiternte_data$datumernte
@@ -289,14 +286,14 @@ if (calc_nconc == 1) {
 
 if (calc_bedgrad == 1) {
   print("Lese bedgrad.tx")
-  bedgrad_data = read.table(paste(data_folder, "bedgrad.txt", sep=""), header=T, sep=";")
+  bedgrad_data = read.table(paste(data_folder, "/bedgrad.txt", sep=""), header=T, sep=";")
   bedgrad_datum = strptime(bedgrad_data$datumereignis, format="%Y-%m-%d")
   bedgrad = bedgrad_data$messwert
 } # end calc_bedgrad
 
 if (calc_soilnmin == 1) {
   print("Lese nmin.tx")
-  nmin_data = read.table(paste(data_folder, "nmin.txt", sep=""), header=T, sep=";")
+  nmin_data = read.table(paste(data_folder, "/nmin.txt", sep=""), header=T, sep=";")
   nmin_datum = strptime(nmin_data$datumbdprobe, format="%Y-%m-%d")
   
   print("Ermittle Nmin-Durchschnittswerte für die Tiefen 0-30, 30-60 und 60-90cm")
@@ -311,7 +308,7 @@ if (calc_soilnmin == 1) {
 
 if (calc_soilmoisture == 1) {
   print("Lese wasser.tx")
-  moisture_data =  read.table(paste(data_folder, "wasser.txt", sep=""), header=T, sep=";")
+  moisture_data =  read.table(paste(data_folder, "/wasser.txt", sep=""), header=T, sep=";")
   moisture_datum = strptime(moisture_data$datumbdprobe, format="%Y-%m-%d")
   
   print("Ermittle H2O-Durchschnittswerte für die Tiefen 0-30, 30-60 und 60-90cm")
@@ -332,11 +329,11 @@ if (calc_soilmoisture == 1) {
 
 if (calc_bodtemp == 1) {
   print("Lese bodtemp5.tx")
-  bodtemp5_data =  read.table(paste(data_folder, "bodtemp5cm.txt", sep=""), header=T, sep=";")
+  bodtemp5_data =  read.table(paste(data_folder, "/bodtemp5cm.txt", sep=""), header=T, sep=";")
   bodtemp5_datum = strptime(bodtemp5_data$Datum, format="%Y-%m-%d")
 
   print("Lese bodtemp20.tx")
-  bodtemp20_data =  read.table(paste(data_folder, "bodtemp20cm.txt", sep=""), header=T, sep=";")
+  bodtemp20_data =  read.table(paste(data_folder, "/bodtemp20cm.txt", sep=""), header=T, sep=";")
   bodtemp20_datum = strptime(bodtemp20_data$Datum, format="%Y-%m-%d")
  
 
@@ -348,7 +345,7 @@ if (calc_bodtemp == 1) {
 
 if (calc_wasser_v4 == 1) {
   print("Lese wasser.tx")
-  moisture_data =  read.table(paste(data_folder, "wasser-v4.txt", sep=""), header=T, sep=";")
+  moisture_data =  read.table(paste(data_folder, "/wasser-v4.txt", sep=""), header=T, sep=";")
   moisture_datum = strptime(moisture_data$datumbdprobe, format="%Y-%m-%d")
   
   print("Ermittle H2O-Durchschnittswerte für die Tiefen 0-30, 30-60 und 60-90cm")
@@ -359,7 +356,7 @@ if (calc_wasser_v4 == 1) {
   moisture90 = moisture_data$h2o[which(moisture_data$tiefe_cm == "60-90")]
   moisture90_datum = moisture_datum[which(moisture_data$tiefe_cm == "60-90")]
   
-  moisture_data_grav =  read.table(paste(data_folder, "wasser.txt", sep=""), header=T, sep=";")
+  moisture_data_grav =  read.table(paste(data_folder, "/wasser.txt", sep=""), header=T, sep=";")
   moisture_datum_grav = strptime(moisture_data_grav$datumbdprobe, format="%Y-%m-%d")
   
   print("Ermittle H2O-Durchschnittswerte für die Tiefen 0-30, 30-60 und 60-90cm")

@@ -6,17 +6,21 @@ import sys
 sys.path.append('../python')
 sys.path.append('../python/eva2')
 
+# specification of platform dependent path separators
+sep = "/"
+if (sys.platform.startswith('win')):
+    # if windows
+    sep = "\\"
 
-args = ["--fruchtfolge=\"04\" ",
-        "--anlage=2 ",
-        #"--anlage=4",
-        "--standort=\"gueterfelde\"",
-        "--location=19 ",
+args = ["--fruchtfolge=\"01\" ",
+        "--anlage=1 ",
+        "--standort=\"ascha\" ",
+        "--location=11 ",
         "--classification=1 "
         #"--startdate=\"01-01-2009\" "
-        #"--enddate=\"31-12-2010\" "
+        #"--enddate=\"31-12-2005\" "
         "-y " 
-        #"--copypath=/home/specka/promotion/dissertation/data/sensitivity_analysis/vernalisation_tests/"
+        #"--copypath=\"E:/Eigene Dateien prescher/monica_simulations/single_simulations/\""
         ]
 
 
