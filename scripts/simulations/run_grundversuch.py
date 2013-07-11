@@ -7,8 +7,8 @@ import datetime
 import numpy
 
 
-ff_collection = ["01"]
-#ff_collection = ["01","02", "03", "04", "05", "06", "07", "08"]
+#ff_collection = ["03"]
+ff_collection = ["01","02", "03", "04", "05", "06", "07", "08"]
 
 save_to_database = 0
 
@@ -47,7 +47,7 @@ for ff in ff_collection:
     # Grundversuch
     ##########################################################
     
-    command_list.append("python eva2_simulation.py --fruchtfolge " + ff + " -y " + anlage1 + " --standort ascha --location 11 --classification 1 --copypath \"" + dir + "\" " + option_enddate1)
+    #command_list.append("python eva2_simulation.py --fruchtfolge " + ff + " -y " + anlage1 + " --standort ascha --location 11 --classification 1 --copypath \"" + dir + "\" " + option_enddate1)
     #command_list.append("python eva2_simulation.py --fruchtfolge " + ff + " -y " + anlage2 + " --standort ascha --location 11 --classification 1 --copypath \"" + dir + "\" " + option_enddate2)
     #command_list.append("python eva2_simulation.py --fruchtfolge " + ff + " -y " + anlage3 + " --standort ascha --location 11 --classification 1 --copypath \"" + dir + "\" " + option_enddate3)
     #command_list.append("python eva2_simulation.py --fruchtfolge " + ff + " -y " + anlage4 + " --standort ascha --location 11 --classification 1 --copypath \"" + dir + "\" " + option_enddate4)
@@ -55,8 +55,8 @@ for ff in ff_collection:
     #command_list.append("python eva2_simulation.py --fruchtfolge " + ff + " -y " + anlage3 + " --standort bernburg --location 44 --classification 1 --copypath \"" + dir + "\" " + option_enddate3)
     #command_list.append("python eva2_simulation.py --fruchtfolge " + ff + " -y " + anlage4 + " --standort bernburg --location 44 --classification 1 --copypath \"" + dir + "\" " + option_enddate4)
     
-    #command_list.append("python eva2_simulation.py --fruchtfolge " + ff + " -y " + anlage1 + " --standort dornburg --location 16 --classification 1 --copypath \"" + dir + "\" " + option_enddate1)
-    #command_list.append("python eva2_simulation.py --fruchtfolge " + ff + " -y " + anlage2 + " --standort dornburg --location 16 --classification 1 --copypath \"" + dir + "\" " + option_enddate2)
+    command_list.append("python eva2_simulation.py --fruchtfolge " + ff + " -y " + anlage1 + " --standort dornburg --location 16 --classification 1 --copypath \"" + dir + "\" " + option_enddate1)
+    # command_list.append("python eva2_simulation.py --fruchtfolge " + ff + " -y " + anlage2 + " --standort dornburg --location 16 --classification 1 --copypath \"" + dir + "\" " + option_enddate2)
     #command_list.append("python eva2_simulation.py --fruchtfolge " + ff + " -y " + anlage3 + " --standort dornburg --location 16 --classification 1 --copypath \"" + dir + "\" " + option_enddate3)
     #command_list.append("python eva2_simulation.py --fruchtfolge " + ff + " -y " + anlage4 + " --standort dornburg --location 16 --classification 1 --copypath \"" + dir + "\" " + option_enddate4)
 

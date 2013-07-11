@@ -6,11 +6,6 @@ import sys
 sys.path.append('../python')
 sys.path.append('../python/eva2')
 
-# specification of platform dependent path separators
-sep = "/"
-if (sys.platform.startswith('win')):
-    # if windows
-    sep = "\\"
 
 args = ["--fruchtfolge=\"01\" ",
         "--anlage=1 ",
