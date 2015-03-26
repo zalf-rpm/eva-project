@@ -18,19 +18,19 @@ ff_collection = ["03"]
 # 6 100% 2. Anlage
 
 startdate1 = " --startdate=\"01-01-2009\""
-enddate1 = " --enddate=\"31-12-2011\""
+enddate1 = " --enddate=\"31-12-2012\""
 
-startdate2 = " --startdate=\"01-01-2009\""
-enddate2 = " --enddate=\"31-12-2011\""
+startdate2 = " --startdate=\"01-01-2010\""
+enddate2 = " --enddate=\"31-12-2013\""
 
 save_to_database = 0
 
-time_dir = "full_runs/gaerrest/"
+time_dir = "full_runs/gaerrest/2015-03-16"
 
 for ff in ff_collection:
     
-    global_dir = "E:/Eigene Dateien prescher/monica_simulations/" + time_dir + "/ff" + ff
-    dir = global_dir + "simulation/"
+    global_dir = "D:/Eigene Dateien prescher/monica_simulations/" + time_dir + "/ff" + ff
+    dir = global_dir + "/simulation/"
     
     
     ##########################################################
@@ -39,19 +39,19 @@ for ff in ff_collection:
     
     command_list = []
     
-        
+ 
     # 1. Versuchsjahr ###########################################
-#    command_list.append("python eva2_simulation.py -y -v --fruchtfolge " + ff + " --anlage 3 --standort ascha --location 11 --classification 1 --copypath \"" + dir + "\" " + startdate1 + enddate1)
-#    command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 2 --standort ascha --location 11 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
-#    command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 3 --standort ascha --location 11 --classification 9 --copypath \"" + dir + "\" " +  startdate1 + enddate1)    
+    command_list.append("python eva2_simulation.py -y -v --fruchtfolge " + ff + " --anlage 3 --standort ascha --location 11 --classification 1 --copypath \"" + dir + "\" " + startdate1 + enddate1)
+    command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 2 --standort ascha --location 11 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
+#    command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 3 --standort ascha --location 11 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
 #    
 #    command_list.append("python eva2_simulation.py -y -v --fruchtfolge " + ff + " --anlage 1 --standort dornburg --location 16 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
 #    command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 2 --standort dornburg --location 16 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
-#    command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 3 --standort dornburg --location 16 --classification 9 --copypath \"" + dir + "\" " +  startdate1 + enddate1)    
+#    command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 3 --standort dornburg --location 16 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
 #    
 #    command_list.append("python eva2_simulation.py -y -v --fruchtfolge " + ff + " --anlage 1 --standort ettlingen --location 17 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
 #    command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 2 --standort ettlingen --location 17 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
-#    command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 3 --standort ettlingen --location 17 --classification 9 --copypath \"" + dir + "\" " +  startdate1 + enddate1)   
+#    command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 3 --standort ettlingen --location 17 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
 #    
 #    command_list.append("python eva2_simulation.py -y -v --fruchtfolge " + ff + " --anlage 3 --standort guelzow --location 18 --classification 1 --copypath \"" + dir + "\" " + startdate1 + enddate1)
 #    command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 2 --standort guelzow --location 18 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
@@ -59,18 +59,18 @@ for ff in ff_collection:
 #    
 #    command_list.append("python eva2_simulation.py -y -v --fruchtfolge " + ff + " --anlage 3 --standort trossin --location 25 --classification 1 --copypath \"" + dir + "\" " + startdate1 + enddate1)
 #    command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 2 --standort trossin --location 25 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
-#    command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 3 --standort trossin --location 25 --classification 9 --copypath \"" + dir + "\" " +  startdate1 + enddate1)
+#    command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 3 --standort trossin --location 25 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
 #    
 #    command_list.append("python eva2_simulation.py -y -v --fruchtfolge " + ff + " --anlage 3 --standort werlte --location 27 --classification 1 --copypath \"" + dir + "\" " + startdate1 + enddate1)
 #    command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 2 --standort werlte --location 27 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
-#    command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 3 --standort werlte --location 27 --classification 9 --copypath \"" + dir + "\" " +  startdate1 + enddate1)
+#    command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 3 --standort werlte --location 27 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
 #        
 #
 #    # 2. Versuchsjahr ###########################################
 #
-    #command_list.append("python eva2_simulation.py -y -v --fruchtfolge " + ff + " --anlage 4 --standort ascha --location 11 --classification 1 --copypath \"" + dir + "\" " + startdate1 + enddate1)
-    #command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 5 --standort ascha --location 11 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
-    #command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 6 --standort ascha --location 11 --classification 9 --copypath \"" + dir + "\" " +  startdate1 + enddate1)    
+#    command_list.append("python eva2_simulation.py -y -v --fruchtfolge " + ff + " --anlage 4 --standort ascha --location 11 --classification 1 --copypath \"" + dir + "\" " + startdate2 + enddate2)
+#    command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 5 --standort ascha --location 11 --classification 9 --copypath \"" + dir + "\" " + startdate2 + enddate2)
+#    command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 6 --standort ascha --location 11 --classification 9 --copypath \"" + dir + "\" " +  startdate2 + enddate2)    
     
     #command_list.append("python eva2_simulation.py -y -v --fruchtfolge " + ff + " --anlage 4 --standort dornburg --location 16 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)       
     #command_list.append("python eva2_simulation.py -v -y --fruchtfolge " + ff + " --anlage 5 --standort dornburg --location 16 --classification 9 --copypath \"" + dir + "\" " + startdate1 + enddate1)
@@ -102,3 +102,4 @@ for ff in ff_collection:
     # Sammeln der Ergebnisse fuer bessere Auswertung
     os.system("python order_results.py " + "\"" + global_dir + "\"")
 
+print "--------------------Ende Gaerrest-Simulation AKP--------------------"

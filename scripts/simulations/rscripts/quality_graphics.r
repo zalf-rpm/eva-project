@@ -30,8 +30,8 @@ modell_datum = strptime(smout$Datum,format="%d/%m/%Y")
 
 min_date = min(modell_datum)
 max_date = max(modell_datum)
-min_year = format(min_date, "%Y")
-max_year = format(max_date, "%Y")
+min_year = format(min_date,"%Y")
+max_year = format(max_date,"%Y")
 max_year = as.numeric(max_year)+1
 
 max_date = paste(max_year, format(max_date, "-%m-%d"), sep="")
@@ -41,8 +41,8 @@ print(quartals)
 half_years <- seq(as.POSIXct(format(min_date, "%Y-%m-%d")), as.POSIXct(max_date), by='6 month')
 years <- seq(as.POSIXct(format(min_date, "%Y-%m-%d")), as.POSIXct(max_date), by='1 year')
 print(years)
-labels = format(years, "%Y")
-print(labels)
+#labels = format(years,"%Y")
+#print(labels)
 
 ###########################################################
 # Ertrag
@@ -64,7 +64,7 @@ if (calc_ertrag == 1) {
     )
 
     max_y = 200
-    plot(modell_datum, modell_yield/100.0, 
+    plot(modell_datum, modell_yield/100.00, 
          col="#42a46b", 
     #     main="Yield", 
          xlab="Datum", 
@@ -81,13 +81,14 @@ if (calc_ertrag == 1) {
 
     if ( compare_with_measured_values==1) {
         # messpunkte
-        points(avg_yielddatum,avg_messertrag/1000.0, col="black")
+        points(avg_yielddatum,avg_messertrag/100.0, col="black")
     }
 
     #fertilizer
     #abline(v=as.POSIXct(fertilizer_datum), col=color_fertilizer, lwd=lwd_fertilizer)
 
     # x-Achse
+    labels=format(modell_datum,"%m")
     axis(1, at=quartals, cex=cex_axis, col=color_grid, labels=FALSE) # x-Achse zeichnen
     axis(1, at=years, cex=cex_axis, col=color_axis, labels=labels, lwd=lwd_axis) # x-Achse zeichnen
 

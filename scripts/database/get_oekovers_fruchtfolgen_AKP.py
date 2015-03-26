@@ -6,7 +6,6 @@ import os
 import csv
 import codecs
 import datetime
-
 import database_config
 
 #########################################################
@@ -14,32 +13,36 @@ import database_config
 ######################################################### 
 separator=";"
 
-# Grundversuch
-classification = 1
-anlagen = [1,2,3,4]
-fruchtfolgen = ["01","02","03","04","05","06","07","08","09"]
-location_list = [11,44,16,17,18,19,20,45,63,25,27]
+# ökovers
+classification = 8
+anlage = 9  # KORB: 0,1,2,3,4; ÖKOVERS: 5,6,7,8,9
 
-#kleiner gärrest
-#classification = 9
-#anlagen = [2,3,5,6]
-#fruchtfolgen = ["03"]
-#location_list = [11,16,17,18,25,27]
-#location_list = [11,16]
+#oekvariante = None
+duengung_varianten = 0
+fruchtfolgen = ["0","1","2","3","4","5","6","7","8","9"]
+location_list = [16,20,23,24,27,28]
 
-#ökovers - V1
-#classification = 8
-#anlagen = [1,2,3,4,5,6,7,8,9]
-#duengung_varianten = [0,4,5,6,7]
-#fruchtfolgen = ["01","02","03"]
-#location_list = [16,20,23,24,27,28]
+if (anlage == 3):
+    #oekvariante = "V1"
+    duengung_varianten = 0
+    fruchtfolgen = ["0","1","2","3","4","5","6","7","8","9"]
+    #location_list = [16]
+    location_list = [16,20,23,24,27,28]
+elif(anlage == 5):
+    #oekvariante = "V2"
+    duengung_varianten = 0
+    fruchtfolgen = ["0","1","2","3","4","5","6","7","8","9"]
+    location_list = [16,20,23,24,27,28]
+    
+# V1
+
 
 
 #########################################################
 
 rootpath = "docs"
 exit_on_error = 0
-debug_output = 0
+debug_output = 1
 
 datum = datetime.datetime.today().strftime("%Y-%m-%d_%H-%M-%S")
 
@@ -68,46 +71,26 @@ def main():
     if (not os.path.isdir(rootpath)):
             os.makedirs(rootpath) 
 
-    # generate files that are sorted by anlagen, location, ff
-    # iterate through all anlagen and locations
-    for anlage in anlagen:
-        output_file = open(rootpath + "/" + str(classification)  + "-eva2_fruchtfolgen_anlage3" + str(anlage) + ".csv", "wb")
-        csv_output = csv.writer(output_file, delimiter=separator)    
-        
-        csv_output.writerow(["Datenabfrage am: " + datum])
-        csv_output.writerow([])
-        
-        years = get_years_of_anlage(anlage)
-        header = ["Standort", "FF", "Anl."] + years
-        
-        for location in location_list:
-            csv_output.writerow(header)
-            get_ff_infos_for_location(location, anlage, fruchtfolgen, conn, cursor, csv_output, output_names, ff_stellungen, nutzungs_map)
-            #csv_output.writerow([])
-        
-        output_file.close()
-        
+       
+
+    output_file = open(rootpath + "/oekovers-"+ str(anlage) + str(duengung_varianten) + "-fruchtfolgen.csv", "wb")
+    csv_output = csv.writer(output_file, delimiter=separator)        
         
     # generate files that are sorted by location, ff, anlagen
     # iterate through all anlagen and locations
-    
-    output_file = open(rootpath + "/"  + str(classification) + "-"  + "_fruchtfolgen.csv", "wb")
-    csv_output = csv.writer(output_file, delimiter=separator)    
-    
-    csv_output.writerow(["Datenabfrage am: " + datum])
-    csv_output.writerow([])
+    for location in location_list:   
         
-    for location in location_list:
-        
-        years = ["Jahr 1", "Jahr 2", "Jahr 3", "Jahr 4"]
-        header = ["Standort", "FF", "Anl."] + years
+        years = ["2007", "2008", "2009", "2010", "2011", "2012", "2013"]
+        #if (anlage==5):
+        #    years.append("2010")
+        header = ["Standort", "Var.", "Dueng.-Variante", "FF"] + years
         
         csv_output.writerow(header)
         
         for ff in fruchtfolgen:
-            for anlage in anlagen:         
-                print "Analyse:", location, ff, anlage   
-                get_ff_infos_for_location(location, anlage, [ff], conn, cursor, csv_output, output_names, ff_stellungen, nutzungs_map)
+            #for duenger_variante in duengung_varianten:         
+            print "Analyse:", location, ff, anlage   
+            get_ff_infos_for_location(location, anlage, duengung_varianten, [ff], conn, cursor, csv_output, output_names, ff_stellungen, nutzungs_map)
             #csv_output.writerow([])
         
     output_file.close()
@@ -122,21 +105,21 @@ def main():
 """
 
 """
-def get_ff_infos_for_location(location, anlage, ffs, conn, cursor, csv_output, output_names, ff_stellungen, nutzungs_map):
+def get_ff_infos_for_location(location, anlage, duengung_varianten, ffs, conn, cursor, csv_output, output_names, ff_stellungen, nutzungs_map):
     
     print "get infos: ", ffs
         
     # get start year the Anlage
-    start_year = int(get_years_of_anlage(anlage)[0])
+    start_year = 2007
     
     for ff in ffs:                
-        output_row = [output_names[location], ff, anlage]
+        output_row = [output_names[location], anlage, duengung_varianten, ff]
         
         
-        id= str(location) + str(classification) + str(anlage) + ff 
+        id= str(location) + str(classification) + str(anlage) + str(duengung_varianten) + ff 
         print "Analysing\t", id
         
-        query_string = """SELECT id_pg, id_ff_stellung,
+        query_string = """SELECT id_pg, id_ff_stellung_willms,
                           id_fruchtfolgeglied, id_frucht, frucht,
                           id_nutzung, erntejahr  
                           FROM 3_70_Pruefglieder P where id_pg like \""""  + id + """%\" 
@@ -158,22 +141,25 @@ def get_ff_infos_for_location(location, anlage, ffs, conn, cursor, csv_output, o
         old_erntejahr = None
         row_text = ""
         for row in rows:
-            ff_stellung = ff_stellungen[int(row[1])]
+            print row
             ff_glied = int(row[2])
             id_frucht = int(row[3])
             frucht = row[4]
             nutzung = nutzungs_map[int(row[5])]
             erntejahr = int(row[6])
+            print "erntejahr", erntejahr
             
-            new_ffg = frucht + " (" + str(id_frucht) + "), " +  str(ff_stellung) + ", " + nutzung + ", (" + str(erntejahr) + ") "
+            new_ffg = frucht + " (" + str(id_frucht) + "), " + nutzung + ", (" + str(erntejahr) + ") "
             
             cutting_number = get_cutting_number(id, ff_glied, cursor, conn )
             if (cutting_number>0):
                 new_ffg += "(Cuts: " + str(cutting_number) + ")"
                 
+            print "erntejahr", erntejahr, " old_erntejahr: ", old_erntejahr
             if ( (old_erntejahr != erntejahr) and (old_erntejahr != None) and (erntejahr>=start_year)):
                 output_row.append(row_text)
                 row_text = ""
+                print row_text
         
             if (len(row_text)>0):
                 row_text += " - "    
@@ -299,9 +285,7 @@ def get_location_name_map():
     locations[25] = "Trossin"
     locations[26] = "Wehnen"
     locations[27] = "Werlte"
-    locations[44] = "Bernburg"
-    locations[45] = "Lindenhof"
-    locations[63] = "Niederweiler"
+    locations[28] = "Witzenhausen"
     return locations   
 
 #########################################################

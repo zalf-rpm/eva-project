@@ -37,16 +37,16 @@ if (classification == 1) {
   if (anlage==1) {
     legend_year=2009
   } else if (anlage==2) {
-    legend_year=2010  
+    legend_year=2013  
   } else if (anlage==3) {
     legend_year=2012    
   } else if (anlage==4) {
-    legend_year=2012  
+    legend_year=2013  
   }
   
-  legend_date=ISOdate(legend_year,7,1)
-  legend_date2=ISOdate(legend_year,7,1)
-  legend_date3=ISOdate(legend_year,9,1)
+  legend_date=ISOdate(legend_year,12,1) # was 7
+  legend_date2=ISOdate(legend_year,12,1) # was 7
+  legend_date3=ISOdate(legend_year,12,1) # was 9
 }
 
 if (classification == 9) {
@@ -75,4 +75,4 @@ print(paste("Pfad:        ", root_folder))
 print(paste("Verzeichnis: ", folder))
 
 
-	
+

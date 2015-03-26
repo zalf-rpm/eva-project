@@ -1,9 +1,9 @@
-folder="2013-07-08_15-46-06-profil-27"
+folder="2015-03-26_13-15-25-profil-22"
 standort=11
-profil=27
-anlage=1
-ff="01"
+profil=22
+anlage=2
+ff="03"
 classification=1
-root_folder="E:/Eigene Dateien prescher/monica_simulations/runs/ascha/grundversuch/ff01/anlage-1/results/"
+root_folder="d:/Eigene Dateien prescher/monica_simulations/runs/ascha/grundversuch/ff03/anlage-2/results/"
 standortname="ascha"
-data_folder ="E:/Eigene Dateien prescher/eva_messdaten/ascha/grundversuch/ff01/anlage-1"
+data_folder ="d:/Eigene Dateien prescher/eva_messdaten/ascha/grundversuch/ff03/anlage-2"

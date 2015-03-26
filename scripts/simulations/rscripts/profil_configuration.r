@@ -1,4 +1,3 @@
-
 fc=c(0,0,0)
 pwp=c(0,0,0)
 
@@ -544,7 +543,7 @@ if (profil == 1) {
 
 
 
-# Ausnahmen wegen V4 Simuation
+# Ausnahmen wegen V4 Simulation
 if (standort == 59) {
 
   if (anlage ==1 | anlage == 3) {

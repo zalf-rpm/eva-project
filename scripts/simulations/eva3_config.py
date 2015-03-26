@@ -23,9 +23,9 @@ def get_config(standort, fruchtfolge, anlage, klassifikation = 1):
     config.setClassification(klassifikation)
     
     conn = MySQLdb.connect (host = "mysql",
-                       user = "gast",
-                       passwd = "gast",
-                       db = "eva2")
+                       user = "prescher",
+                       passwd = "spatz5",
+                       db = "eva3")
     cursor = conn.cursor () 
     
     # find out crop rotation information for building the id_pg strings
@@ -67,16 +67,16 @@ def get_config(standort, fruchtfolge, anlage, klassifikation = 1):
             start_date = "2005-01-01"
             config.setEndDate(2008,12,31,1)  # simulation end date set to next year because of quantification of the groundwater recharge and N leaching
         elif(anlage == 2):
-            start_date = "2006-01-01"
+            start_date = "2005-09-01"
             config.setEndDate(2010,12,31,1)
         elif(anlage == 3 and standort == 44):
-            start_date = "2009-01-01"
+            start_date = "2008-10-01"
             config.setEndDate(2012,12,31,1)
         elif(anlage == 3 and standort != 44):
-            start_date = "2009-01-01"
+            start_date = "2008-01-01"
             config.setEndDate(2012,12,31,1)    
         elif(anlage == 4):
-            start_date = "2010-01-01"
+            start_date = "2009-01-01"
             config.setEndDate(2013,12,31,1)
     
     elif (klassifikation == 9):

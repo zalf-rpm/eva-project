@@ -37,3 +37,5 @@ nosetests.xml
 scripts/simulations/db-connections.ini
 scripts/database/database_config.py
 scripts/simulations/rscripts/dir_config.r
+/scripts/database/docs
+/scripts/database/MySQL_DB_EVA3

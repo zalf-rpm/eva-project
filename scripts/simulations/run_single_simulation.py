@@ -8,14 +8,14 @@ sys.path.append('../python/eva2')
 
 
 args = ["--fruchtfolge=\"01\" ",
-        "--anlage=1 ",
-        "--standort=\"ascha\" ",
-        "--location=11 ",
+        "--anlage=4 ",
+        "--standort=\"gueterfelde\" ",
+        "--location=19 ",
         "--classification=1 "
-        #"--startdate=\"01-01-2009\" "
-        #"--enddate=\"31-12-2005\" "
+        "--startdate=\"01-01-2009\" "
+        "--enddate=\"31-12-2013\" "
         "-y " 
-        #"--copypath=\"E:/Eigene Dateien prescher/monica_simulations/single_simulations/\""
+        "--copypath=\"E:/Eigene Dateien prescher/monica_simulations/single_simulations/2014-03-18\""
         ]
 
 

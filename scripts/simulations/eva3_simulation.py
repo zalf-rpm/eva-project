@@ -24,7 +24,7 @@ import shutil
 from save_monica_results import *
 from add_simulation_to_sql_db import *
 import getopt
-from eva2_config import *
+from eva3_config import *
 
 # TODO: wichtig den Pfad zu den EVA-Daten zu spezifizieren
 data_path = os.path.normpath("d:/Eigene Dateien prescher/eva_messdaten")
@@ -219,7 +219,7 @@ def main():
     print "Previous to runEva2Simulation"
     result_object = monica.runEVA2Simulation(simulation_config)
     if (analyse):
-        save_monica_results(result_object,output_path, standort, simulation_config.getClassification(), simulation_config.getFruchtFolge(), simulation_config.getVariante(), simulation_config.getProfil_number(), simulation_config.getLocation())
+        save_monica_results(result_object,output_path, standort, simulation_config.getClassification(), simulation_config.getFruchtFolge(),  simulation_config.getVariante(),simulation_config.getProfil_number(), simulation_config.getLocation())
 
     if (save_results_to_db):
         add_simulation_to_sql_db(simulation_config.getLocation(),
@@ -252,6 +252,6 @@ def main():
         print "Removing old directory: ", output_path
         shutil.rmtree(output_path)
     return output_path
-
+    
 main()
 

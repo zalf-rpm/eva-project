@@ -13,7 +13,6 @@ ignore_last_mn_uptake_values_count = 0
 
 source("config.r")
 source("dir_config.r")
-source("profil_configuration.r")
 
 # import functions for statistical parameters
 source("r_statistical_calculations.r")
@@ -296,53 +295,15 @@ if (calc_soilnmin == 1) {
   print("Lese nmin.tx")
   nmin_data = read.table(paste(data_folder, "/nmin.txt", sep=""), header=T, sep=";")
   nmin_datum = strptime(nmin_data$datumbdprobe, format="%Y-%m-%d")
-    
-  print("Ermittle Nmin-Durchschnittswerte fuer die Tiefen 0-30, 30-60 und 60-90cm")
-  nmin30_unkorr = nmin_data$no3[which(nmin_data$tiefe_cm == "0-30")] + nmin_data$nh4[which(nmin_data$tiefe_cm == "0-30")]
+  
+  print("Ermittle Nmin-Durchschnittswerte für die Tiefen 0-30, 30-60 und 60-90cm")
+  nmin30 = nmin_data$no3[which(nmin_data$tiefe_cm == "0-30")] + nmin_data$nh4[which(nmin_data$tiefe_cm == "0-30")]
   nmin30_datum = nmin_datum[which(nmin_data$tiefe_cm == "0-30")]
-  nmin60_unkorr = nmin_data$no3[which(nmin_data$tiefe_cm == "30-60")] + nmin_data$nh4[which(nmin_data$tiefe_cm == "30-60")]
+  nmin60 = nmin_data$no3[which(nmin_data$tiefe_cm == "30-60")] + nmin_data$nh4[which(nmin_data$tiefe_cm == "30-60")]
   nmin60_datum = nmin_datum[which(nmin_data$tiefe_cm == "30-60")]
-  nmin90_unkorr = nmin_data$no3[which(nmin_data$tiefe_cm == "60-90")] + nmin_data$nh4[which(nmin_data$tiefe_cm == "60-90")]
+  nmin90 = nmin_data$no3[which(nmin_data$tiefe_cm == "60-90")] + nmin_data$nh4[which(nmin_data$tiefe_cm == "60-90")]
   nmin90_datum = nmin_datum[which(nmin_data$tiefe_cm == "60-90")]
   
-  print("Lese boden.txt fuer Korrekturen")
-  boden_data = read.table(paste(data_folder, "/boden.txt", sep=""), header=T, sep=";")
-  
-  #Korrektur der angenommenen Trockenrohdichte
-  tdr_labor30 = nmin_data$tdr_labor[which(nmin_data$tiefe_cm == "0-30")]
-  tdr_messung30 = boden_data$tdr_messung[which((boden_data$ho_cm == "0")&(boden_data$id_profil == profil))]
-  nmin30_korrtdr = nmin30_unkorr * tdr_messung30 / tdr_labor30
-  
-  tdr_labor60 = nmin_data$tdr_labor[which(nmin_data$tiefe_cm == "30-60")]
-  tdr_messung60 = boden_data$tdr_messung[which((boden_data$ho_cm >=30) & (boden_data$hu_cm <= 81) & (boden_data$id_profil == profil))]
-  nmin60_korrtdr = nmin60_unkorr * tdr_messung60 / tdr_labor60
-  
-  tdr_labor90 = nmin_data$tdr_labor[which(nmin_data$tiefe_cm == "60-90")]
-  tdr_messung90 = boden_data$tdr_messung[which((boden_data$ho_cm >=53) & (boden_data$hu_cm <= 130) & (boden_data$id_profil == profil))]
-  nmin90_korrtdr = nmin90_unkorr * tdr_messung90 / tdr_labor90
-  
-  #Korrektur des Steingehaltes
-  nmin30 = nmin30_korrtdr * (100 - boden_data$skellet[which((boden_data$ho_cm == "0")&(boden_data$id_profil == profil))]) / 100
-  nmin60 = nmin60_korrtdr * (100 - boden_data$skellet[which((boden_data$ho_cm >=30) & (boden_data$hu_cm <= 81) & (boden_data$id_profil == profil))]) / 100
-  nmin90 = nmin90_korrtdr * (100 - boden_data$skellet[which((boden_data$ho_cm >=53) & (boden_data$hu_cm <= 130) & (boden_data$id_profil == profil))]) / 100
- 
-  #ohne Korrektur
-  #nmin30 = nmin30_unkorr
-  #nmin60 = nmin60_unkorr
-  #nmin90 = nmin90_unkorr
-  
-  #print(profil)
-  #print(tdr_labor60)
-  #print(tdr_messung60)
-  #print(nmin60_unkorr)
-  #print(nmin60_korrtdr, digits=2)
-  #print(nmin60, digits=2)
-  #print(tdr_labor90)
-  #print(tdr_messung90)
-  #print(nmin90_unkorr)
-  #print(nmin90_korrtdr, digits=2)
-  #print(nmin90, digits=2)
-    
 } # end calc_soilnmin
 
 if (calc_soilmoisture == 1) {
@@ -350,7 +311,7 @@ if (calc_soilmoisture == 1) {
   moisture_data =  read.table(paste(data_folder, "/wasser.txt", sep=""), header=T, sep=";")
   moisture_datum = strptime(moisture_data$datumbdprobe, format="%Y-%m-%d")
   
-  print("Ermittle H2O-Durchschnittswerte fuer die Tiefen 0-30, 30-60 und 60-90cm")
+  print("Ermittle H2O-Durchschnittswerte für die Tiefen 0-30, 30-60 und 60-90cm")
   moisture30 = moisture_data$h2o[which(moisture_data$tiefe_cm == "0-30")]
   moisture30_datum = moisture_datum[which(moisture_data$tiefe_cm == "0-30")]
   moisture60 = moisture_data$h2o[which(moisture_data$tiefe_cm == "30-60")]

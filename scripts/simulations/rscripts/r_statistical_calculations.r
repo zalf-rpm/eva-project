@@ -30,7 +30,7 @@ calc_mae <- function(p,o)
 }
 
 ####################################################################
-# Calculates modelling effiency between predicted and observed data
+# Calculates modelling efficiency between predicted and observed data
 ####################################################################
 calc_ef <- function(p,o)
 {
@@ -188,7 +188,7 @@ getDevStageOfBBCH <- function(bbch, id_pg)
 #####################################
 calc_mse <- function(p,o)  {
     if (length(p) == 0 || length(o) == 0) {
-      return(NA)
+     return(NA)
     }
     n = length(o)
     mse = (cumsum((p-o)^2)[n]) / n
@@ -207,7 +207,7 @@ calc_mses <- function(p,o)  {
     }
 
     n = length(o)
-    linreg=lm(p~o)
+    linreg = lm(p~o)
 
     coeff = linreg[[1]]
     a = coeff[1]
@@ -235,3 +235,25 @@ calc_nmses <- function(p,o)  {
 
     return(mses/mse)
 }
+
+
+#####################################
+# Calcs R2 (by AKP 06/02/14)
+#####################################
+calc_rsquare <- function(p,o) {
+
+    if (length(p) == 0 || length(o) == 0) {
+      return(9999)
+    }
+    
+    n = length(o)
+    mean_o = mean(o)
+    mean_p = mean(p)
+    rzaehler = (cumsum((o-mean_o)*(p-mean_p))[n])/n
+    rnenner = (sqrt((cumsum((o-mean_o)^2)[n])/n)) * (sqrt((cumsum((p-mean_p)^2)[n])/n))
+    rcoeff = rzaehler / rnenner
+    rsquare = rcoeff^2
+    
+    return (rsquare)
+}
+

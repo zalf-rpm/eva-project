@@ -7,7 +7,7 @@ import database_config
 separator=";"
 
 # TODO: important output directory
-data_directory = "d:/Eigene Dateien Prescher/eva_messdaten"
+data_directory = "E:/Eigene Dateien prescher/eva_messdaten"
 
 
 ff = None
@@ -372,7 +372,7 @@ def query_nmin(conn, cursor, id, filename):
                     WHERE id_pg in (SELECT id_pg FROM 2_30_Boden_jaehrl_Analysen 
                            WHERE id_pg REGEXP \'""" + id + """\')
                     AND datumbdprobe IS NOT NULL                   
-                    and q_no3_n like \"q\" and q_nh4_n like \"q\" 
+                    and q_no3_n not like \"u\" and q_nh4_n not like \"u\" 
                     group by datumbdprobe, tiefe_cm   
                     order by datumbdprobe                                   
                     """
@@ -415,12 +415,13 @@ def query_boden(conn, cursor, id, filename):
                     """
     
     print >> query_file, "##################################"
-    print >> query_file, "#boden.txt"                   
+    print >> query_file, "# boden.txt"                   
     print >> query_file, "##################################"
     print >> query_file, query_string
     print >> query_file,"\n\n"
                    
     print query_string
+    print
     
     
     cursor.execute(query_string)    
@@ -833,12 +834,12 @@ def get_start_and_end_year(klassifikation, anlage):
         elif (anlage_param == 3):
 
             start_year = "2009-01-01"
-            end_year= "2012-12-31"
+            end_year= "2011-12-31"
 
         elif (anlage_param == 4):
 
             start_year = "2010-01-01"
-            end_year= "2013-12-31"
+            end_year= "2011-12-31"
             
     # define start and end year of the respective 'anlagen' of 'gärrest versuch'        
     elif (klassifikation == 9):
@@ -846,12 +847,12 @@ def get_start_and_end_year(klassifikation, anlage):
         if (anlage_param==1 or anlage_param==2 or anlage_param == 3):
 
             start_year = "2009-01-01"
-            end_year= "2012-12-31"
+            end_year= "2011-12-31"
 
         elif (anlage_param==4 or anlage_param==5 or anlage_param == 6):
 
             start_year = "2009-01-01"
-            end_year= "2013-12-31"
+            end_year= "2011-12-31"
 
     return start_year, end_year
     

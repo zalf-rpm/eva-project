@@ -7,7 +7,7 @@ import database_config
 separator=";"
 
 # TODO: important output directory
-data_directory = "d:/Eigene Dateien Prescher/eva_messdaten"
+data_directory = "E:/Eigene Dateien prescher/eva_messdaten"
 
 
 ff = None
@@ -54,7 +54,7 @@ elif (anlage_param == 6):
     anlage = [6]
 
 
-# build regular expression for the id_pg that is later needed in the sql queries
+# build regular exprestion for the id_pg that is later needed in the sql queries
 id = str(location_id) + str(klassifikation) + "["
 for ind, anl in enumerate(anlage):
     
@@ -100,7 +100,6 @@ def main():
     query_zwischenernte(conn, cursor, id, "zwischenernte.txt")
     query_hoehe(conn, cursor, id, "hoehe.txt")
     query_nmin(conn, cursor, id, "nmin.txt")
-    query_boden(conn, cursor, id, "boden.txt")
     query_wasser(conn, cursor, id, "wasser.txt")
     query_bodtemp(conn, cursor, id, location_id)
     query_fertilizer(conn, cursor, id, "fertilizer.txt")
@@ -366,13 +365,14 @@ def query_hoehe(conn, cursor, id, filename):
 ############################################
 def query_nmin(conn, cursor, id, filename):
     
-    query_string = """SELECT id_pg, sagwdh, datumbdprobe, tiefe_cm, avg(dichte_verwendet_g_je_cm3) AS TRD_Labor, avg(no3_n_kg_jehaschi) AS no3, 
+    query_string = """SELECT id_pg, sagwdh, datumbdprobe, tiefe_cm, avg(no3_n_kg_jehaschi) AS no3, 
                     avg(nh4_n_kg_jehaschi) AS nh4 
                     FROM 2_30_Boden_jaehrl_Analysen B 
                     WHERE id_pg in (SELECT id_pg FROM 2_30_Boden_jaehrl_Analysen 
                            WHERE id_pg REGEXP \'""" + id + """\')
                     AND datumbdprobe IS NOT NULL                   
-                    and q_no3_n like \"q\" and q_nh4_n like \"q\" 
+                    and datumbdprobe<=\"""" + end_year + """\"
+                    and q_no3_n not like \"u\" and q_nh4_n not like \"u\" 
                     group by datumbdprobe, tiefe_cm   
                     order by datumbdprobe                                   
                     """
@@ -390,7 +390,7 @@ def query_nmin(conn, cursor, id, filename):
     cursor.execute(query_string)    
     rows = cursor.fetchall()
             
-    header = ["id_pg","sagwdh","datumbdprobe","tiefe_cm", "tdr_labor", "no3","nh4"]
+    header = ["id_pg","sagwdh","datumbdprobe","tiefe_cm","no3","nh4"]
     
     if (cursor.rowcount == 0):
         print "ERROR: query got no result!"
@@ -399,41 +399,6 @@ def query_nmin(conn, cursor, id, filename):
     
     save_query_results(rows, header, filename)    
     
-    
-############################################
-# boden.txt
-############################################
-def query_boden(conn, cursor, id, filename):
-
-    location_id = str(int(sys.argv[4]))
-    
-    query_string = """SELECT id_standort, id_profil, ho_cm, hu_cm, Skellet, TRD_g_jecm3
-                    FROM 3_31_Boden_Physik B 
-                    WHERE id_standort in (SELECT id_standort FROM 3_31_Boden_Physik 
-                           WHERE id_standort=\"""" + location_id + """\")    
-                    order by id_profil                                   
-                    """
-    
-    print >> query_file, "##################################"
-    print >> query_file, "#boden.txt"                   
-    print >> query_file, "##################################"
-    print >> query_file, query_string
-    print >> query_file,"\n\n"
-                   
-    print query_string
-    
-    
-    cursor.execute(query_string)    
-    rows = cursor.fetchall()
-            
-    header = ["id_standort","id_profil","ho_cm","hu_cm", "skellet", "tdr_messung"]
-    
-    if (cursor.rowcount == 0):
-        print "ERROR: query got no result!"
-        if (exit_on_error):
-            sys.exit(1)
-    
-    save_query_results(rows, header, filename)        
     
     
 ############################################
@@ -833,12 +798,12 @@ def get_start_and_end_year(klassifikation, anlage):
         elif (anlage_param == 3):
 
             start_year = "2009-01-01"
-            end_year= "2012-12-31"
+            end_year= "2011-12-31"
 
         elif (anlage_param == 4):
 
             start_year = "2010-01-01"
-            end_year= "2013-12-31"
+            end_year= "2011-12-31"
             
     # define start and end year of the respective 'anlagen' of 'gärrest versuch'        
     elif (klassifikation == 9):
@@ -846,12 +811,12 @@ def get_start_and_end_year(klassifikation, anlage):
         if (anlage_param==1 or anlage_param==2 or anlage_param == 3):
 
             start_year = "2009-01-01"
-            end_year= "2012-12-31"
+            end_year= "2011-12-31"
 
         elif (anlage_param==4 or anlage_param==5 or anlage_param == 6):
 
             start_year = "2009-01-01"
-            end_year= "2013-12-31"
+            end_year= "2011-12-31"
 
     return start_year, end_year
     
